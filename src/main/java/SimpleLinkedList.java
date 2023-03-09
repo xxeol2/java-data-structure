@@ -1,14 +1,14 @@
 import java.util.Objects;
 
-public class SimpleLinkedList implements SimpleList {
+public class SimpleLinkedList<T> implements SimpleList<T> {
 
     int size = 0;
     private Node first;
     private Node last;
 
-    static class Node {
+    class Node {
 
-        public Node(Node previous, String value, Node next) {
+        public Node(Node previous, T value, Node next) {
             this.previous = previous;
             this.value = value;
             this.next = next;
@@ -16,11 +16,11 @@ public class SimpleLinkedList implements SimpleList {
 
         Node previous;
         Node next;
-        String value;
+        T value;
     }
 
     @Override
-    public boolean add(String value) {
+    public boolean add(T value) {
         Node newNode = new Node(last, value, null);
         if (first == null) {
             first = newNode;
@@ -33,7 +33,7 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public void add(int index, String value) {
+    public void add(int index, T value) {
         validateIndexWhenInsert(index);
         if (index == size) {
             add(value);
@@ -50,19 +50,19 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public String set(int index, String value) {
+    public T set(int index, T value) {
         validateIndex(index);
         Node now = first;
         for (int i = 0; i < index; i++) {
             now = first.next;
         }
-        String oldValue = now.value;
+        T oldValue = now.value;
         now.value = value;
         return oldValue;
     }
 
     @Override
-    public String get(int index) {
+    public T get(int index) {
         validateIndex(index);
         Node now = first;
         for (int i = 0; i < index; i++) {
@@ -72,7 +72,7 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public boolean contains(String value) {
+    public boolean contains(T value) {
         Node now = first;
         boolean flag = false;
         while (now != null) {
@@ -86,7 +86,7 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public int indexOf(String value) {
+    public int indexOf(T value) {
         Node now = first;
         int index = 0;
         while (now != null) {
@@ -110,7 +110,7 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public boolean remove(String value) {
+    public boolean remove(T value) {
         Node now = first;
         while (now.next != null) {
             if (Objects.equals(now.value, value)) {
@@ -123,7 +123,7 @@ public class SimpleLinkedList implements SimpleList {
     }
 
     @Override
-    public String remove(int index) {
+    public T remove(int index) {
         validateIndex(index);
         Node now = first;
         for (int i = 0; i < index; i++) {

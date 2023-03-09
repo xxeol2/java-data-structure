@@ -1,28 +1,37 @@
 import java.util.Arrays;
+import org.jetbrains.annotations.NotNull;
 
-public class SimpleArrayList implements SimpleList {
+public class SimpleArrayList<T> implements SimpleList<T> {
 
     private static final int DEFAULT_CAPACITY = 10;
 
-    private String[] elementData;
+    private T[] elementData;
     private int size;
     private int capacity;
 
     public SimpleArrayList() {
-        this.elementData = new String[DEFAULT_CAPACITY];
+        this.elementData = (T[]) new Object[DEFAULT_CAPACITY];
         this.size = 0;
         this.capacity = DEFAULT_CAPACITY;
     }
 
+    public SimpleArrayList(T @NotNull ... values) {
+        this();
+        for (T value : values) {
+            this.add(value);
+        }
+    }
+
     @Override
-    public boolean add(String value) {
+    public boolean add(T value) {
         plusSize();
         elementData[size - 1] = value;
         return true;
     }
 
+
     @Override
-    public void add(int index, String value) {
+    public void add(int index, T value) {
         validateIndexWhenInsert(index);
         plusSize();
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
@@ -42,26 +51,26 @@ public class SimpleArrayList implements SimpleList {
     }
 
     @Override
-    public String set(int index, String value) {
+    public T set(int index, T value) {
         validateIndex(index);
-        String oldValue = elementData[index];
+        T oldValue = elementData[index];
         elementData[index] = value;
         return oldValue;
     }
 
     @Override
-    public String get(int index) {
+    public T get(int index) {
         validateIndex(index);
         return elementData[index];
     }
 
     @Override
-    public boolean contains(String value) {
+    public boolean contains(T value) {
         return indexOf(value) != -1;
     }
 
     @Override
-    public int indexOf(String value) {
+    public int indexOf(T value) {
         for (int i = 0; i < size; i++) {
             if (elementData[i].equals(value)) {
                 return i;
@@ -81,7 +90,7 @@ public class SimpleArrayList implements SimpleList {
     }
 
     @Override
-    public boolean remove(String value) {
+    public boolean remove(T value) {
         int index = indexOf(value);
         if (index == -1) {
             return false;
@@ -91,9 +100,9 @@ public class SimpleArrayList implements SimpleList {
     }
 
     @Override
-    public String remove(int index) {
+    public T remove(int index) {
         validateIndex(index);
-        String oldValue = elementData[index];
+        T oldValue = elementData[index];
         removeByIndex(index);
         return oldValue;
     }
@@ -108,7 +117,7 @@ public class SimpleArrayList implements SimpleList {
     public void clear() {
         capacity = DEFAULT_CAPACITY;
         size = 0;
-        elementData = new String[DEFAULT_CAPACITY];
+        elementData = (T[]) new Object[DEFAULT_CAPACITY];
     }
 
     private void validateIndex(int index) {
